@@ -27,19 +27,23 @@
                     </label>
                     <label>
                         小组
-                        <select name="group" required>
+                        <select name="group_select" id="groupSelect" onchange="toggleCustomGroup()">
                             {% for group in group_options %}
                             <option value="{{ group }}">{{ group }}</option>
                             {% endfor %}
+                            <option value="custom">自定义小组...</option>
                         </select>
+                        <input type="text" name="group_custom" id="groupCustom" placeholder="输入新小组名称" style="display:none; margin-top:8px;">
                     </label>
                     <label>
                         活动方向
-                        <select name="activity" required>
+                        <select name="activity_select" id="activitySelect" onchange="toggleCustomActivity()">
                             {% for activity in activity_options %}
                             <option value="{{ activity }}">{{ activity }}</option>
                             {% endfor %}
+                            <option value="custom">自定义活动...</option>
                         </select>
+                        <input type="text" name="activity_custom" id="activityCustom" placeholder="输入新活动名称" style="display:none; margin-top:8px;">
                     </label>
                     <label>
                         一句话说明
@@ -47,6 +51,32 @@
                     </label>
                     <button type="submit">提交报名并查看统计</button>
                 </form>
+
+                <script>
+                    function toggleCustomGroup() {
+                        const select = document.getElementById('groupSelect');
+                        const custom = document.getElementById('groupCustom');
+                        if (select.value === 'custom') {
+                            custom.style.display = 'block';
+                            custom.required = true;
+                        } else {
+                            custom.style.display = 'none';
+                            custom.required = false;
+                        }
+                    }
+
+                    function toggleCustomActivity() {
+                        const select = document.getElementById('activitySelect');
+                        const custom = document.getElementById('activityCustom');
+                        if (select.value === 'custom') {
+                            custom.style.display = 'block';
+                            custom.required = true;
+                        } else {
+                            custom.style.display = 'none';
+                            custom.required = false;
+                        }
+                    }
+                </script>
             </section>
 
             <section class="card side-card">

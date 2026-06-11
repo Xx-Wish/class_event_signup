@@ -27,8 +27,17 @@ def index():
 @app.route("/signup", methods=["POST"])
 def signup():
     name = request.form.get("name", "").strip()
-    group = request.form.get("group", "").strip()
-    activity = request.form.get("activity", "").strip()
+    
+    # 处理小组选择
+    group_select = request.form.get("group_select", "").strip()
+    group_custom = request.form.get("group_custom", "").strip()
+    group = group_custom if group_select == "custom" else group_select
+    
+    # 处理活动选择
+    activity_select = request.form.get("activity_select", "").strip()
+    activity_custom = request.form.get("activity_custom", "").strip()
+    activity = activity_custom if activity_select == "custom" else activity_select
+    
     reason = request.form.get("reason", "").strip() or "想参与本次班级活动。"
 
     return redirect(
@@ -60,7 +69,15 @@ def result():
             }
         )
 
-    stats = {activity_name: 0 for activity_name in ACTIVITY_OPTIONS}
+    # 收集所有活动选项（包括自定义的）
+    all_activities = set(ACTIVITY_OPTIONS)
+    for item in registrations:
+        all_activities.add(item["activity"])
+    
+    stats = {}
+    for activity_name in sorted(all_activities):
+        stats[activity_name] = 0
+    
     for item in registrations:
         stats[item["activity"]] = stats.get(item["activity"], 0) + 1
 
